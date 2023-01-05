@@ -1,4 +1,5 @@
 import argparse
+import random
 from typing import cast
 
 from base.distance_grid import DistanceGrid
@@ -17,6 +18,7 @@ AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
 
 if __name__ == "__main__":
+    random.seed(1)
     parser = argparse.ArgumentParser(description="Render a maze")
     parser.add_argument("levels", type=int, help="number of levels")
     parser.add_argument("rows", type=int, help="number of rows")
@@ -40,7 +42,9 @@ if __name__ == "__main__":
 
     grid = Grid3d(levels, rows, columns)
     algorithm.on(grid)
-    grid.braid(.5)
+    # exporter.render(grid)
+    # grid.braid(.5)
+    # exporter.render(grid)
 
     for num in range(rotations):
         grid = cast(DistanceGrid, Rotator().on(grid))
