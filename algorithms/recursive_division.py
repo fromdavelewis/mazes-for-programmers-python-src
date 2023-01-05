@@ -31,7 +31,9 @@ class RecursiveDivision(Algorithm):
         print("start", loop, level, row, column, depth, height, width)
         ASCIIExporter().render(self._grid)
         m = max(depth, height, width)
-        if height == 1 or width == 1:
+        r = random.random() >= .1
+        print(r)
+        if height == 1 or width == 1 or (height <= 5 and width <=5 and r):
             print("done", loop, level, row, column, depth, height, width)
             return
         if m == width:
