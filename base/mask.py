@@ -1,10 +1,14 @@
 from random import randrange
 from typing import Any, Generator, List, Optional, Tuple
 
-Key = Tuple[int, int]
+Key = Tuple[int, int, int]
 BoolList = List[bool]
 
 class Mask:
+
+    @property
+    def levels(self) -> int:
+        return self._levels
 
     @property
     def rows(self) -> int:
@@ -14,14 +18,15 @@ class Mask:
     def columns(self) -> int:
         return self._columns
 
-    def __init__(self, rows: int, columns: int) -> None:
+    def __init__(self, levels: int, rows: int, columns: int) -> None:
+        self._levels: int = levels
         self._rows: int = rows
         self._columns: int = columns
-        self._bits: List[List[bool]] =  [[True for column in range(self._columns)] for row in range(self._rows)]
+        self._bits: List[List[bool]] =  [[[True for column in range(self._columns)] for row in range(self._rows)] for level in range(self._levels)]
         # print(self._bits.each_cell].count(True))
         # self._bits[0][0] = True
-        self._bits[1][1] = False
-        self._bits[1][2] = False
+        # self._bits[1][1] = False
+        # self._bits[1][2] = False
         # print(self._bits[0].count(True))
         # print(sum([1,2]))
 
@@ -41,15 +46,17 @@ class Mask:
             raise IndexError('Only mask[row,col] __setitem__ calls are supported')
         self.set_cell_at(*key, value)
 
-    def cell_at(self, row: int, column: int) -> Optional[bool]:
+    def cell_at(self, level: int, row: int, column: int) -> Optional[bool]:
+        if not (0 <= level < self._levels):
+            return None
         if not (0 <= row < self._rows):
             return None
         if not (0 <= column < self._columns):
             return None
-        return self._bits[row][column]
+        return self._bits[level][row][column]
 
-    def set_cell_at(self, row: int, column: int, value: bool) -> None:
-        self._grid[row][column] = value
+    def set_cell_at(self, level: int, row: int, column: int, value: bool) -> None:
+        self._bits[level][row][column] = value
 
 
     def each_row(self) -> Generator[BoolList, None, None]:
@@ -77,4 +84,5 @@ def is_key(key: Key) -> bool:
     """
     Runtime check for key correctness
     """
-    return type(key) == tuple and len(key) == 2 and not any(type(value) != int for value in key)
+    return type(key) == tuple and len(key) == 3 and not any(type(value) != int for value in key)
+    

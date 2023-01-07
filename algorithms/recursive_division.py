@@ -28,12 +28,9 @@ class RecursiveDivision(Algorithm):
         # ASCIIExporter().render(self._grid)
 
     def divide(self, loop, level, row, column, depth, height, width):
-        print("start", loop, level, row, column, depth, height, width)
-        ASCIIExporter().render(self._grid)
         m = max(depth, height, width)
         r = random.random() >= .9
         if height == 1 or width == 1 or depth == 1 or (height <= 5 and width <=5 and depth <=5 and r):
-            print("done", loop, level, row, column, depth, height, width)
             return
 
         if m == depth:
@@ -43,7 +40,8 @@ class RecursiveDivision(Algorithm):
                 for y in range(column, column+width):
                     if [divide_at, x, y] != passage_at:
                         c = self._grid[divide_at, x, y]
-                        c.unlink(c.up)
+                        if c is not None:
+                            c.unlink(c.up)
             self.divide(loop+1, level, row, column, divide_at+1-level, height, width)
             self.divide(loop+1, divide_at+1, row, column, depth+level-divide_at-1, height, width)
         elif m == width:
@@ -53,7 +51,8 @@ class RecursiveDivision(Algorithm):
                 for x in range(row, row+height):
                     if [w, x, divide_at] != passage_at:
                         c = self._grid[w, x, divide_at]
-                        c.unlink(c.east)
+                        if c is not None:
+                            c.unlink(c.east)
             self.divide(loop+1, level, row, column, depth, height, divide_at+1-column)
             self.divide(loop+1, level, row, divide_at+1, depth, height, width+column-divide_at-1)
         elif m == height:
@@ -63,6 +62,7 @@ class RecursiveDivision(Algorithm):
                 for y in range(column, column+width):
                     if [w, divide_at, y] != passage_at:
                         c = self._grid[w, divide_at, y]
-                        c.unlink(c.south)
+                        if c is not None:
+                            c.unlink(c.south)
             self.divide(loop+1, level, row, column, depth, divide_at+1-row, width)
             self.divide(loop+1, level, divide_at+1, column, depth, height+row-divide_at-1, width)
