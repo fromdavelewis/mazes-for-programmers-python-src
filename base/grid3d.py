@@ -1,7 +1,7 @@
 from itertools import chain
 from random import randrange
 import random
-from typing import Dict, cast, Generator, List, Optional, Tuple
+from typing import Dict, cast, Generator, List, Optional, Tuple, Any
 
 from base.cell import Cell, is_cell
 from base.distances import Distances
@@ -58,6 +58,11 @@ class Cell3d(Cell):
 
     def __repr__(self) -> str:
         return "({},{},{}) = {}".format(self.level,self.column, self.row, str(hex(id(self))))
+
+    def __eq__(self, other_cell: Optional["Cell3d"]) -> bool:       # type: ignore
+        if not is_cell(other_cell) or other_cell is None:
+            return False
+        return self.level == other_cell.level and self.row == other_cell.row and self.column == other_cell.column
 
 class Grid3d(Grid):
 
@@ -161,6 +166,8 @@ class Grid3d(Grid):
             raise IndexError('Only grid[level,row,col] __getitem__ calls are supported')
         return self.cell_at(*key)
 
+def is_cell(cell: Any) -> bool:
+    return isinstance(cell, Cell3d)
 
 def is_key(key: Key) -> bool:
     """

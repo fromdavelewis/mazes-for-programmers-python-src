@@ -7,6 +7,7 @@ from algorithms.binary_tree import BinaryTree
 from algorithms.binary_tree3d import BinaryTree3d
 from algorithms.hunt_and_kill import HuntAndKill
 from algorithms.recursive_backtracker import RecursiveBacktracker
+from algorithms.recursive_division import RecursiveDivision
 from algorithms.sidewinder import Sidewinder
 from algorithms.wilson import Wilson
 from exporters.base_exporter import Exporter
@@ -17,7 +18,7 @@ from exporters.wolf3d_exporter import Wolf3DExporter
 from exporters.game_exporter import GameExporter
 
 
-ALGORITHMS: List[Type[Algorithm]] = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson, BinaryTree3d]
+ALGORITHMS: List[Type[Algorithm]] = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson, BinaryTree3d,RecursiveDivision]
 ALGORITHM_NAMES: List[str] = [x.__name__ for x in ALGORITHMS]
 # TODO: Add PixelExporter
 EXPORTERS: List[Type[Exporter]] = [Wolf3DExporter, PNGExporter, UnicodeExporter, ASCIIExporter,GameExporter]
