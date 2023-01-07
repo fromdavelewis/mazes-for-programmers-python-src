@@ -22,6 +22,7 @@ AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 if __name__ == "__main__":
     random.seed(10)
     parser = argparse.ArgumentParser(description="Render a maze")
+    parser.add_argument("levels", type=int, help="number of levels")
     parser.add_argument("rows", type=int, help="number of rows")
     parser.add_argument("columns", type=int, help="number of columns")
     parser.add_argument("algorithm", type=str, help="algorithm to use")
@@ -31,24 +32,29 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pathfinding", type=str2bool, default=False, help="whether solve the maze")
     args = parser.parse_args()
 
+    levels = args.levels
     rows = args.rows
     columns = args.columns
     algorithm = get_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
     exporter = get_exporter(args.exporter, AVAILABLE_EXPORTERS)
     rotations = args.rotations
     pathfinding = args.pathfinding
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, columns, args.exporter))
+    print("Algorithm: {}\nLevels: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, levels, rows, columns, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}".format(rotations, pathfinding))
 
-    mask = Mask(rows, columns)
+    mask = Mask(levels, rows, columns)
     # print("MASK")
     # print(mask.count())
     # print(mask.random_cell())
+    mask.set_cell_at(0, 1, 0, False)
+    mask.set_cell_at(0, 1, 1, False)
+    mask.set_cell_at(1, 1, 1, False)
+    mask.set_cell_at(1, 1, 2, False)
 
     grid = MaskedGrid(mask)
     # grid = DistanceGrid(rows, columns)
-    # grid.cell_at(0, 9).west.east = None
-    # grid.cell_at(0, 9).south.north = None
+    # grid.cell_at(0, 1, 3).west.east = None
+    # grid.cell_at(0, 1, 3).south.north = None
     # r: Any
     # for row in grid.each_row():
     #     print("ROW3")
